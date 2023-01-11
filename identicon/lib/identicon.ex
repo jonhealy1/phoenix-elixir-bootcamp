@@ -6,6 +6,23 @@ defmodule Identicon do
     |> build_grid
     |> filter_odd_squares
     |> build_pixel_map
+    |> draw_image
+    |> save_image(input)
+  end
+
+  def save_image(image, input) do
+    File.write("#{input}.png", image)
+  end
+
+  def draw_image(%Identicon.Image{color: color, pixel_map: pixel_map}) do
+    image = :egd.create(250, 250)
+    fill = :egd.color(color)
+
+    Enum.each pixel_map, fn({start, stop}) ->
+      :egd.filledRectangle(image, start, stop, fill)
+    end
+
+    :egd.render(image)
   end
 
   def build_pixel_map(%Identicon.Image{grid: grid} = image) do
@@ -27,20 +44,23 @@ defmodule Identicon do
       rem(code, 2) == 0
     end
 
-    %Identicon.Image{grid: grid}
+    %Identicon.Image{image | grid: grid}
   end
 
   def build_grid(%Identicon.Image{hex: hex} = image) do
-    grid = hex
-    |> Enum.chunk(3)
-    |> Enum.map(&mirror_row/1)
-    |> List.flatten
-    |> Enum.with_index
+    grid =
+      hex
+      |> Enum.chunk(3)
+      |> Enum.map(&mirror_row/1)
+      |> List.flatten
+      |> Enum.with_index
+
     %Identicon.Image{image | grid: grid}
   end
 
   def mirror_row(row) do
     [first, second | _tail] = row
+
     row ++ [second, first]
   end
 
