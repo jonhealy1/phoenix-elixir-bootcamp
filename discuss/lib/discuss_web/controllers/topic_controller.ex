@@ -1,14 +1,13 @@
 defmodule DiscussWeb.TopicController do
   use DiscussWeb, :controller
 
-  # alias DiscussWeb.Topic
-
-  def new(conn, params) do
+  def new(conn, _params) do
     changeset = DiscussWeb.Topic.changeset(%DiscussWeb.Topic{}, %{})
     render conn, "new.html", changeset: changeset
   end
 
-  # def create(conn, %{"topic" => topic}) do
+  def create(conn, %{"topic" => topic}) do
+    IO.inspect(conn)
   #   # changeset = conn.assigns.user
   #   #   |> build_assoc(:topics)
   #   #   |> Topic.changeset(topic)
@@ -21,5 +20,5 @@ defmodule DiscussWeb.TopicController do
   #   #   {:error, changeset} ->
   #   #     render conn, "new.html", changeset: changeset
   #   # end
-  # end
+  end
 end
