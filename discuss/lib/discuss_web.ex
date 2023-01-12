@@ -27,13 +27,27 @@ defmodule DiscussWeb do
     end
   end
 
+  # def controller do
+  #   quote do
+  #     use Phoenix.Controller, namespace: DiscussWeb
+
+  #     import Plug.Conn
+  #     import DiscussWeb.Gettext
+  #     alias DiscussWeb.Router.Helpers, as: Routes
+  #   end
+  # end
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: DiscussWeb
 
+      # alias DiscussWeb.Repo
+      import Ecto
+      import Ecto.Query
+
       import Plug.Conn
+      import DiscussWeb.Router.Helpers
       import DiscussWeb.Gettext
-      alias DiscussWeb.Router.Helpers, as: Routes
     end
   end
 
@@ -49,8 +63,30 @@ defmodule DiscussWeb do
 
       # Include shared imports and aliases for views
       unquote(view_helpers())
+
+      use Phoenix.HTML
+
+      import DiscussWeb.Router.Helpers
+      import DiscussWeb.ErrorHelpers
+      import DiscussWeb.Gettext
     end
   end
+
+  # def view do
+  #   quote do
+  #     use Phoenix.View, root: "lib/discuss_web/templates", namespace: DiscussWeb
+
+  #     # Import convenience functions from controllers
+  #     import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]
+
+  #     # Use all HTML functionality (forms, tags, etc)
+  #     use Phoenix.HTML
+
+  #     import DiscussWeb.Router.Helpers
+  #     import DiscussWeb.ErrorHelpers
+  #     import DiscussWeb.Gettext
+  #   end
+  # end
 
   def live_view do
     quote do
