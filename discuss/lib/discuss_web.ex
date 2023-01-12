@@ -41,7 +41,7 @@ defmodule DiscussWeb do
     quote do
       use Phoenix.Controller, namespace: DiscussWeb
 
-      # alias DiscussWeb.Repo
+      alias Discuss.Repo
       import Ecto
       import Ecto.Query
 
